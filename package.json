@@ -1,0 +1,31 @@
+{
+  "name": "density-trie",
+  "version": "1.0.0",
+  "description": "Trie tree implementation with keywords density calcuation functionality",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/klesh/density-trie.git"
+  },
+  "keywords": [
+    "trie",
+    "density",
+    "keyword"
+  ],
+  "author": "Klesh Wong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/klesh/density-trie/issues"
+  },
+  "homepage": "https://github.com/klesh/density-trie#readme",
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "should": "^7.1.1"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}
