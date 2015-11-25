@@ -159,45 +159,41 @@ Trie.prototype.ensureBoundary = function(text, word, index) {
  * Calcuate keywords density over text
  */
 Trie.prototype.density = function(text) {
-  var results = {};
-  var self = this;
-  function addToResult(keyword, index) {
-    if (!self.ensureBoundary(text, keyword, index))
-      return;
-    var count = results[keyword] || 0;
-    results[keyword] = count + 1;
-  }
+  this.ensure(text);
 
-  var founds = {}; // 临时存储
-  for (var index = 0, length = text.length; index < length; index++)  {
-    var c = text[index];
+  var result = {};
+  var drafts = {};
 
-    // 在已找到的模式中匹配
-    for (var keyword in founds) {
+  for (var i = 0, j = text.length; i < j; i++) {
+    var c = text[i];
+    for (var parentWord in drafts) {
+      var parentNode = drafts[parentWord];
+      delete drafts[parentWord];
 
-      var trie = founds[keyword];
-      var find = trie.get(c);
-      delete founds[keyword]; // 删除老的节点。
+      var currentNode = parentNode.get(c);
+      if (currentNode === undefined) {
+        continue;
+      }
 
-      if (find !== undefined) {
-        var newKeyword = keyword + c;
-        if (find === DEAD_END) { // 找到完整关键词, 并且后面没有了
-          addToResult(newKeyword, index); 
-        } else if (find.get(OPEN_END)) { // 完整关键词，但还有更长的关键词
-          addToResult(newKeyword, index); 
-          founds[newKeyword] = find; 
-        } else { // 关键词还不完整
-          founds[newKeyword] = find; 
+      var currentWord = parentWord + c;
+      var deadEnd = currentNode === DEAD_END;
+      if (deadEnd || currentNode.get(OPEN_END)) {
+        if (this.ensureBoundary(text, currentWord, i)) {
+          result[currentWord] = ( result[currentWord] || 0 ) + 1;
         }
       }
 
+      if (!deadEnd) { // is an open end or uncomplete word.
+        drafts[currentWord] = currentNode;
+      }
     }
 
-    var tmp = this.root.get(c);
-    if (tmp) 
-      founds[c] = tmp;
+    var node = this.root.get(c);
+    if (node)
+      drafts[c] = node;
   }
-  return results;
+
+  return result;
 };
 
 Trie.OPEN_END = OPEN_END;

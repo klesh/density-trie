@@ -2,6 +2,10 @@ Density Trie
 ============
 A trie tree implementation, provide add/remove/lookup and density calcuation over specified text. Eastern/Western languages are supported
 
+Requirement
+===========
+Node v4.0+
+
 Installation
 ============
 
@@ -13,7 +17,7 @@ Usage
 =====
 
 ```js
-var Trie = require('density-tree');
+var Trie = require('density-trie');
 var should = require('should');
 
 describe('Demo', function() {
@@ -26,7 +30,7 @@ describe('Demo', function() {
 
   console.log(trie.dump());
 
-  var text = 'here is a fragment of text with "Hello World" and "Hello" should be 2, "Hell" should be 1, no matter if "eHell" or eHello presented';
+  var text = 'here is a fragment of text with "Hello World", "Hello" should be 2, "Hell" should be 1, no matter if "eHell" or eHello presented';
 
   trie.density(text).should.be.deepEqual({
     Hello: 2, 
