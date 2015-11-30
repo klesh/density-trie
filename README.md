@@ -10,7 +10,7 @@ Installation
 ============
 
 ```base
-npm install https://github.com/klesh/density-trie.git --save
+npm install density-trie --save
 ```
 
 Usage
