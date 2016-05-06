@@ -88,5 +88,26 @@ describe('Trie basic functionalities', function() {
     trie.density('这段文字一共包括2个"关键"，1个"关键字"')
       .should.be.deepEqual({ '关键': 2, '关键字': 1 });
   });
+
+  it('Trie.prototype.check', function() {
+    var trie = new Trie();
+    trie.add('sensity keyword');
+
+    
+    trie.check("here is a fragment of text with sensity keyword")
+      .should.be.exactly('sensity keyword');
+
+    should(trie.check("hello world."))
+      .not.be.ok()
+  });
+
+  it('Trie.prototype.replace', function() {
+    var trie = new Trie();
+    trie.add('sex');
+    trie.add('sexy');
+
+    trie.replace('What a sexy lady').should.be.exactly('What a **** lady');
+    trie.replace('sexy not equals to sex').should.be.exactly('**** not equals to ***');
+  })
 });
 

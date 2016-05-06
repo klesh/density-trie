@@ -156,12 +156,58 @@ Trie.prototype.ensureBoundary = function(text, word, index) {
 };
 
 /**
+ * Check if any keyword exists in text
+ */
+Trie.prototype.check = function(text) {
+  var found;
+  this.exec(text, function(word) {
+    found = word;
+    return false; // break down iteration.
+  });
+  return found;
+}
+
+/**
+ * Replace keywords in text with placeholder, default: *
+ */
+Trie.prototype.replace = function(text, placeholder) {
+  placeholder = placeholder || '*';
+  var result = '', lastIndex = -1;
+  this.exec(text, function(word, endIndex) {
+    var length = word.length;
+    var startIndex = endIndex - length;
+    if (lastIndex === -1 || lastIndex < startIndex) {
+      result += text.substring(lastIndex + 1, startIndex + 1);
+    }
+
+    var greed = startIndex < lastIndex;
+    var j = greed ? endIndex - lastIndex : length;
+    for (var i = 0; i < j; i++) {
+      result += placeholder;
+    }
+    lastIndex = endIndex;
+  });
+  result += text.substring(lastIndex + 1);
+  return result;
+}
+
+/**
  * Calcuate keywords density over text
  */
 Trie.prototype.density = function(text) {
+  var result = {};
+  this.exec(text, function(word) {
+    result[word] = ( result[word] || 0 ) + 1;
+  });
+  return result;
+}
+
+/**
+ * Execute on text
+ */
+Trie.prototype.exec = function(text, cb) {
   this.ensure(text);
 
-  var result = {};
   var drafts = {};
 
   for (var i = 0, j = text.length; i < j; i++) {
@@ -179,7 +225,8 @@ Trie.prototype.density = function(text) {
       var deadEnd = currentNode === DEAD_END;
       if (deadEnd || currentNode.get(OPEN_END)) {
         if (this.ensureBoundary(text, currentWord, i)) {
-          result[currentWord] = ( result[currentWord] || 0 ) + 1;
+          if (cb(currentWord, i) === false)
+            return;
         }
       }
 
@@ -192,8 +239,6 @@ Trie.prototype.density = function(text) {
     if (node)
       drafts[c] = node;
   }
-
-  return result;
 };
 
 Trie.OPEN_END = OPEN_END;

@@ -39,5 +39,8 @@ describe('Demo', function() {
   });
 
   should(trie.remove('Hello').lookup('Hello')).not.be.ok();
+
+  trie.check('check method will return immediately when any keyword is found, like Hello').should.be.ok();
+  trie.replace('replace KEYWORD with *******').be.exactly('replace ******* with *******');
 });
 ```

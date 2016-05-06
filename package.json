@@ -1,6 +1,6 @@
 {
   "name": "density-trie",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Trie tree implementation with keywords density calcuation functionality",
   "main": "index.js",
   "scripts": {
