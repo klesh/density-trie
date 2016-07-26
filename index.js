@@ -122,14 +122,13 @@ Trie.prototype.dump = function(node) {
     i = i || 0;
     if (o instanceof Map) {
       var prefix = _.repeat(' ', i);
-
-      for (var k of o.keys()) {
+      o.forEach(function(value, key) {
         if (buff.length) buff.push('\n');
         buff.push(prefix);
         buff.push(k);
         buff.push(": ");
         d(o.get(k), i + 1);
-      }
+      });
     } else {
       buff.push(o);
     }
