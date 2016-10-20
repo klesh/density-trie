@@ -33,7 +33,7 @@ Trie.prototype.node = function(isOpenEnd) {
  */
 Trie.prototype.ensure = function(word) {
   if (!_.isString(word) || word.length === 0)
-    throw new Error('Only String type is accepted');
+    throw new Error('Accept strings only');
 };
 
 /**
