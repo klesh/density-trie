@@ -30,7 +30,7 @@ describe('Demo', function() {
 
   console.log(trie.dump());
 
-  var text = 'here is a fragment of text with "Hello World", "Hello" should be 2, "Hell" should be 1, no matter if "eHell" or eHello presented';
+  var text = 'here is a fragment of text with "Hello World" in it, total number of "Hello" should be 2,  total number of "Hell" should be 1, "eHell" or eHello should not be counted';
 
   trie.density(text).should.be.deepEqual({
     Hello: 2, 
@@ -40,7 +40,7 @@ describe('Demo', function() {
 
   should(trie.remove('Hello').lookup('Hello')).not.be.ok();
 
-  trie.check('check method will return immediately when any keyword is found, like Hello').should.be.ok();
-  trie.replace('replace KEYWORD with *******').be.exactly('replace ******* with *******');
+  trie.check('iteration stop when any keyword is hit like "Hello", the rest will not be examined').should.be.ok();
+  trie.replace('replace keyword Hello with asterisks').be.exactly('replace keyword ***** with asterisks');
 });
 ```
